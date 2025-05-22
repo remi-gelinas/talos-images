@@ -74,7 +74,7 @@ jobs:
       - name: Push image to registry
         id: push-image
         run: |
-          ARTIFACT=$($(cue eval ${{ inputs.profileSource }} -e artifactName --out text))
+          ARTIFACT=$(cue eval ${{ inputs.profileSource }} -e artifactName --out text)
 
           echo "digest=$(crane digest --tarball _out/$ARTIFACT)" >> "$GITHUB_OUTPUT"
 
