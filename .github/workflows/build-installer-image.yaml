@@ -40,7 +40,7 @@ jobs:
 
       - name: Retrieve profile Talos version
         id: talos-version
-        run: echo "version=$(cue eval -e version --out text)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(cue eval ${{ inputs.profile }} -e version --out text)" >> "$GITHUB_OUTPUT"
 
       - name: Build installer image
         run: |
