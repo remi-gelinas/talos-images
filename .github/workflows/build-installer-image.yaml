@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  imager:
+  build-image:
     runs-on: ubuntu-latest
     steps:
       - name: Install 1Password CLI
