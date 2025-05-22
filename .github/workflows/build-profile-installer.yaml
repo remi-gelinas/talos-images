@@ -78,7 +78,7 @@ jobs:
 
           echo "digest=$(crane digest --tarball _out/$ARTIFACT)" >> "$GITHUB_OUTPUT"
 
-          crane push _out/$ARTIFACT ${{ env.REGISTRY }}/${{ inputs.profileName }}:${{ steps.build-info.outputs.talos-version }}+${{ steps.build-info.outputs.short-sha }}
+          crane push _out/$ARTIFACT ${{ env.REGISTRY }}/${{ inputs.profileName }}:${{ steps.build-info.outputs.talos-version }}-${{ steps.build-info.outputs.short-sha }}
           
       
       - name: Generate artifact attestation
