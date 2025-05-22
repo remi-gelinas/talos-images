@@ -33,6 +33,8 @@ jobs:
           op read op://${{ secrets.SECUREBOOT_OP_DB_AUTH_REF }} -o secureboot/db.auth > /dev/null
       
       - uses: cue-lang/setup-cue@v1.0.1
+        with:
+          version: "v0.12.1"
 
       - name: Retrieve profile Talos version
         id: talos-version
