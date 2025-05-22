@@ -1,0 +1,39 @@
+name: Build updated profiles
+
+on:
+  push:
+    branches: [trunk]
+
+jobs:
+  profile-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      profiles-changed: ${{ steps.changed-profiles.outputs.any_changed }}
+      matrix: ${{ steps.changed-profiles.outputs.all_changed_files }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get changed profiles
+        id: changed-profiles
+        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        with:
+          matrix: true
+          files: profiles/*.cue
+
+  build-installers:
+    needs: [profile-changes]
+    uses: ./.github/workflows/build-profile-installer.yaml
+    if: needs.profile-changes.outputs.profiles-changed == 'true'
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+      packages: write
+    strategy:
+      matrix:
+        profile: ${{ fromJSON(needs.profile-changes.outputs.matrix) }}
+    secrets: inherit
+    with:
+      profile: ${{ matrix.profile }}

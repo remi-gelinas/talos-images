@@ -1,0 +1,18 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["github>remi-gelinas/renovate:config.json5"],
+  enabledManagers: ["github-actions", "custom.regex"],
+  customManagers: [
+    {
+      customType: 'regex',
+      managerFilePatterns: ['/^profiles/.*\.cue$/'],
+      matchStrings: [
+        // Talos versions
+        '\\\/\\\/ renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+?.*"(?<currentValue>.*?)"',
+
+        // System extensions
+        '\\\/\\\/ renovate: datasource=(?<datasource>.*?) versioning=(?<versioning>.*?)\\s*?"(?<depName>\\S+):(?<currentValue>\\S+)"'
+      ],
+    },
+  ],
+}
