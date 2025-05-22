@@ -42,5 +42,6 @@ jobs:
 
       - name: Build installer image
         run: |
+          ls -a
           mkdir _out
           cue export ${{ inputs.profile }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.talos-version.outputs.version }} -
