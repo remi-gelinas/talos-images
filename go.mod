@@ -72,8 +72,8 @@ require (
 	github.com/siderolabs/go-pointer v1.0.1 // indirect
 	github.com/siderolabs/net v0.4.0 // indirect
 	github.com/siderolabs/protoenc v0.2.2 // indirect
-	github.com/siderolabs/talos v1.10.0 // indirect
-	github.com/siderolabs/talos/pkg/machinery v1.10.0 // indirect
+	github.com/siderolabs/talos v1.10.2 // indirect
+	github.com/siderolabs/talos/pkg/machinery v1.10.2 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/afero v1.10.0 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
