@@ -5,10 +5,10 @@
       managerFilePatterns: ['profiles/*.cue'],
       matchStrings: [
         // Talos versions
-        '\\/\\/ renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+?.*"(?<currentValue>.*?)"'
+        '\/\/ renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s+?.*"(?<currentValue>.*?)"'
 
         // System extensions
-        '\\/\\/ renovate: datasource=(?<datasource>.*?)\\s*?"(?<depName>\\S+):(?<currentValue>\\S+)"'
+        '\/\/ renovate: datasource=(?<datasource>.*?)\\s*?"(?<depName>\\S+):(?<currentValue>\\S+)"'
       ],
     },
   ],
