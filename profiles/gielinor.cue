@@ -4,6 +4,14 @@ import "github.com/siderolabs/talos/pkg/imager/profile"
 
 let TalosVersion = "v1.10.1"
 
+let extensions = [
+	"ghcr.io/siderolabs/crun:1.21",
+	"ghcr.io/siderolabs/thunderbolt:v1.10.0",
+	"ghcr.io/siderolabs/intel-ucode:20250211",
+	"ghcr.io/siderolabs/i915-ucode:20241110",
+	"ghcr.io/siderolabs/util-linux-tools:2.40.4",
+]
+
 profile.#Profile
 
 platform:   "metal"
@@ -31,13 +39,7 @@ input: {
 		}
 	}
 
-	systemExtensions: [
-		{imageRef: "ghcr.io/siderolabs/crun:1.21"},
-		{imageRef: "ghcr.io/siderolabs/thunderbolt:v1.10.0"},
-		{imageRef: "ghcr.io/siderolabs/intel-ucode:20250211"},
-		{imageRef: "ghcr.io/siderolabs/i915-ucode:20241110"},
-		{imageRef: "ghcr.io/siderolabs/util-linux-tools:2.40.4"},
-	]
+	systemExtensions: [for extension in extensions {imageRef: extension}]
 }
 
 customization: extraKernelArgs: []
@@ -45,5 +47,6 @@ customization: extraKernelArgs: []
 output: {
 	kind:      "installer"
 	outFormat: "raw"
-	isoOptions: sdBootEnrollKeys: "if-safe"
 }
+
+artifactName: "\(output.kind)-\(arch)-secureboot.tar"

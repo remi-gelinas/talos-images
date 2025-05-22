@@ -1,0 +1,91 @@
+name: Build installer image for profile
+
+on:
+  workflow_dispatch:
+    inputs:
+      profileName:
+        type: string
+        description: ""
+        required: true
+
+      profileSource:
+        type: string
+        description: ""
+        required: true
+
+env:
+  REGISTRY: "ghcr.io/remi-gelinas/talos-installer"
+
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
+  packages: write
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install 1Password CLI
+        uses: 1password/install-cli-action@v1
+
+      - name: Use service account token
+        run: |
+          echo "OP_SERVICE_ACCOUNT_TOKEN=${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}" >> "$GITHUB_ENV"
+      
+      - name: Retrieve secureboot components
+        run: |
+          mkdir secureboot
+
+          op read op://${{ secrets.SECUREBOOT_OP_PK_KEY_REF }} -o secureboot/PK.pkcs1.key > /dev/null
+          op read op://${{ secrets.SECUREBOOT_OP_PK_CERT_REF }} -o secureboot/PK.crt > /dev/null
+
+          op read op://${{ secrets.SECUREBOOT_OP_PCR_KEY_REF }} -o secureboot/PCR.pkcs1.key > /dev/null
+
+          op read op://${{ secrets.SECUREBOOT_OP_PK_AUTH_REF }} -o secureboot/PK.auth > /dev/null
+          op read op://${{ secrets.SECUREBOOT_OP_KEK_AUTH_REF }} -o secureboot/KEK.auth > /dev/null
+          op read op://${{ secrets.SECUREBOOT_OP_DB_AUTH_REF }} -o secureboot/db.auth > /dev/null
+      
+      - uses: cue-lang/setup-cue@v1.0.1
+        with:
+          version: "v0.13.0-rc.1"
+      
+      - name: Extract build info
+        id: build-info
+        run: |
+          echo "talos-version=$(cue eval ${{ inputs.profileSource }} -e version --out text)" >> "$GITHUB_OUTPUT"
+          echo "short-sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build installer image
+        run: |
+          mkdir _out
+          cue export ${{ inputs.profileSource }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.build-info.outputs.talos-version }} -
+      
+      - name: Install crane
+        uses: iarekylew00t/crane-installer@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      
+      - name: Push image to registry
+        id: push-image
+        run: |
+          ARTIFACT=$($(cue eval ${{ inputs.profileSource }} -e artifactName --out text))
+
+          echo "digest=$(crane digest --tarball _out/$ARTIFACT)" >> "$GITHUB_OUTPUT"
+
+          crane push _out/$ARTIFACT ${{ env.REGISTRY }}/${{ inputs.profileName }}:${{ steps.build-info.outputs.talos-version }}+${{ steps.build-info.outputs.short-sha }}
+          
+      
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ inputs.profileName }}
+          subject-digest: ${{ steps.push-image.outputs.digest }}
+          push-to-registry: true
