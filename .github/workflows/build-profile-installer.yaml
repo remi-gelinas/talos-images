@@ -31,11 +31,9 @@ jobs:
       - name: Install 1Password CLI
         uses: 1password/install-cli-action@v1
 
-      - name: Use service account token
-        run: |
-          echo "OP_SERVICE_ACCOUNT_TOKEN=${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}" >> "$GITHUB_ENV"
-      
       - name: Retrieve secureboot components
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
         run: |
           mkdir secureboot
 
