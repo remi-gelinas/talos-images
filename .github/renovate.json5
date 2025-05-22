@@ -1,6 +1,6 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["github>remi-gelinas/renovate"],
+  extends: ["github>remi-gelinas/renovate:config.json5"],
   customManagers: [
     {
       customType: 'regex',
