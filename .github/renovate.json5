@@ -1,7 +1,7 @@
 {
   customManagers: [
     {
-      customType: 'profile-regex',
+      customType: 'regex',
       managerFilePatterns: ['/^profiles/.*\.cue$/'],
       matchStrings: [
         // Talos versions
