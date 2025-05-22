@@ -33,7 +33,7 @@ jobs:
 
       - name: Retrieve secureboot components
         env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          OP_SERVICE_ACCOUNT_TOKEN: "${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}"
         run: |
           mkdir secureboot
 
