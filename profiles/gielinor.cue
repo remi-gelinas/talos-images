@@ -3,14 +3,14 @@ package gielinor
 import "github.com/siderolabs/talos/pkg/imager/profile"
 
 // renovate: datasource=github-releases depName=siderolabs/talos
-let TalosVersion = "v1.10.2"
+let TalosVersion = "v1.10.1"
 
 let extensions = [
 	// renovate: datasource=docker
 	"ghcr.io/siderolabs/crun:1.21",
 
 	// renovate: datasource=docker
-	"ghcr.io/siderolabs/thunderbolt:v1.10.2",
+	"ghcr.io/siderolabs/thunderbolt:v1.10.1",
 
 	// renovate: datasource=docker
 	"ghcr.io/siderolabs/intel-ucode:20250211",

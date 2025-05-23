@@ -40,7 +40,7 @@ jobs:
       - name: Extract build info
         id: build-info
         run: |
-          echo "talos-version=$(cue eval ${{ inputs.profileSource }} -e version --out text)" >> "$GITHUB_OUTPUT"
+          echo "talos-version=$(cue eval ${{ inputs.profile }} -e version --out text)" >> "$GITHUB_OUTPUT"
           echo "short-sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
           echo="profile-name=$(cue eval ${{ inputs.profile }} -e '#profile.name' --out text)" >> "$GITHUB_OUTPUT"
 
