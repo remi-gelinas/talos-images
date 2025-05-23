@@ -24,7 +24,7 @@ jobs:
 
   build-installers:
     needs: [profile-changes]
-    uses: ./github/workflows/build-profile-installer.yaml
+    uses: ./.github/workflows/build-profile-installer.yaml
     if: needs.profile-changes.outputs.profiles-changed == 'true'
     permissions:
       id-token: write
