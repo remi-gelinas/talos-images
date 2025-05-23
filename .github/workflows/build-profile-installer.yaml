@@ -1,26 +1,15 @@
 name: Build installer image for profile
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      profileName:
-        type: string
-        description: ""
-        required: true
-
-      profileSource:
+      profile:
         type: string
         description: ""
         required: true
 
 env:
   REGISTRY: "ghcr.io/remi-gelinas/talos-installer"
-
-permissions:
-  id-token: write
-  contents: read
-  attestations: write
-  packages: write
 
 jobs:
   build-image:
@@ -47,19 +36,18 @@ jobs:
           op read op://${{ secrets.SECUREBOOT_OP_DB_AUTH_REF }} -o secureboot/db.auth > /dev/null
       
       - uses: cue-lang/setup-cue@v1.0.1
-        with:
-          version: "v0.13.0-rc.1"
       
       - name: Extract build info
         id: build-info
         run: |
           echo "talos-version=$(cue eval ${{ inputs.profileSource }} -e version --out text)" >> "$GITHUB_OUTPUT"
           echo "short-sha=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo="profile-name=$(cue eval ${{ inputs.profile }} -e '#profile.name' --out text)" >> "$GITHUB_OUTPUT"
 
       - name: Build installer image
         run: |
           mkdir _out
-          cue export ${{ inputs.profileSource }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.build-info.outputs.talos-version }} -
+          cue export ${{ inputs.profile }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.build-info.outputs.talos-version }} -
       
       - name: Install crane
         uses: iarekylew00t/crane-installer@v3
@@ -74,16 +62,14 @@ jobs:
       - name: Push image to registry
         id: push-image
         run: |
-          ARTIFACT=$(cue eval ${{ inputs.profileSource }} -e artifactName --out text)
-
+          ARTIFACT=$(cue eval ${{ inputs.profile }} -e "#profile.artifact" --out text)
           echo "digest=$(crane digest --tarball _out/$ARTIFACT)" >> "$GITHUB_OUTPUT"
-
-          crane push _out/$ARTIFACT ${{ env.REGISTRY }}/${{ inputs.profileName }}:${{ steps.build-info.outputs.talos-version }}-${{ steps.build-info.outputs.short-sha }}
+          crane push _out/$ARTIFACT ${{ env.REGISTRY }}/${{ steps.build-info.outputs.profile-name }}:${{ steps.build-info.outputs.talos-version }}-${{ steps.build-info.outputs.short-sha }}
           
       
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ inputs.profileName }}
+          subject-name: ${{ env.REGISTRY }}/${{ steps.build-info.outputs.profile-name }}
           subject-digest: ${{ steps.push-image.outputs.digest }}
           push-to-registry: true

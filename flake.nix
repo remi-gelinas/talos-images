@@ -24,16 +24,16 @@
             (final: prev: {
               cue = prev.cue.overrideAttrs (
                 finalAttrs: prevAttrs: {
-                  version = "0.13.0-alpha.4";
+                  version = "0.13.0";
 
                   src = prev.fetchFromGitHub {
                     owner = "cue-lang";
                     repo = "cue";
                     rev = "v${finalAttrs.version}";
-                    hash = "sha256-bW64EjmtuL6n88FZ8yRSxTA5o+YprpDnBBucedWwfb4=";
+                    hash = "sha256-RvdjZ3wSc3IhQvYJL989x33qOtVZ4paoQTLFzWF9xj0=";
                   };
 
-                  vendorHash = "sha256-JXLQ6o9bdJphGXgP1PFtf46u/xtbRX8EtDVDFIyO2A0=";
+                  vendorHash = "sha256-J9Ox9Yt64PmL2AE+GRdWDHlBtpfmDtxgUbEPaka5JSo=";
 
                   ldflags = map (
                     flag:

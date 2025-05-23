@@ -10,7 +10,7 @@ let extensions = [
 	"ghcr.io/siderolabs/crun:1.21",
 
 	// renovate: datasource=docker
-	"ghcr.io/siderolabs/thunderbolt:v1.10.0",
+	"ghcr.io/siderolabs/thunderbolt:v1.10.1",
 
 	// renovate: datasource=docker
 	"ghcr.io/siderolabs/intel-ucode:20250211",
@@ -59,4 +59,7 @@ output: {
 	outFormat: "raw"
 }
 
-artifactName: "\(output.kind)-\(arch)-secureboot.tar"
+#profile: {
+	name:     "gielinor"
+	artifact: "\(output.kind)-\(arch)-secureboot.tar"
+}
