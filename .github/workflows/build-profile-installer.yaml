@@ -21,10 +21,10 @@ jobs:
   build-image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Install 1Password CLI
-        uses: 1password/install-cli-action@v1
+        uses: 1password/install-cli-action@143a85f84a90555d121cde2ff5872e393a47ab9f # v1
 
       - name: Retrieve secureboot components
         env:
@@ -41,7 +41,7 @@ jobs:
           op read op://${{ secrets.SECUREBOOT_OP_KEK_AUTH_REF }} -o secureboot/KEK.auth > /dev/null
           op read op://${{ secrets.SECUREBOOT_OP_DB_AUTH_REF }} -o secureboot/db.auth > /dev/null
       
-      - uses: cue-lang/setup-cue@v1.0.1
+      - uses: cue-lang/setup-cue@a93fa358375740cd8b0078f76355512b9208acb1 # v1.0.1
       
       - name: Extract build info
         id: build-info
@@ -56,10 +56,10 @@ jobs:
           cue export ${{ inputs.profile }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.build-info.outputs.talos-version }} -
       
       - name: Install crane
-        uses: iarekylew00t/crane-installer@v3
+        uses: iarekylew00t/crane-installer@742c36c852cb03df7b947b37aff0b65ead86f49e # v3
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -74,7 +74,7 @@ jobs:
           
       
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ steps.build-info.outputs.profile-name }}
           subject-digest: ${{ steps.push-image.outputs.digest }}
