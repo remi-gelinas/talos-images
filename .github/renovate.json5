@@ -16,8 +16,8 @@
     },
   ],
   packageRules: [{
-    groupName: "devDependencies (non-major)",
-    matchManagers: ["custom.regex"],
+    groupName: "talos",
+    matchManagers: ["regex"],
     matchPackageNames: [
       "ghcr.io/siderolabs**",
       "siderolabs**"
