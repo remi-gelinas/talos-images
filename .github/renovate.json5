@@ -17,10 +17,7 @@
   ],
   packageRules: [{
     groupName: "talos",
-    matchManagers: ["regex"],
-    matchPackageNames: [
-      "ghcr.io/siderolabs**",
-      "siderolabs**"
-    ],
+    matchManagers: ["custom.regex"],
+    matchPackageNames: ["**siderolabs**"],
   }]
 }

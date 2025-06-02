@@ -6,7 +6,7 @@ import "github.com/siderolabs/talos/pkg/imager/profile"
 let TalosVersion = "v1.10.2"
 
 let extensions = [
-	// renovate: datasource=docker versioning=semver
+	// renovate: datasource=docker versioning=semver-coerced
 	"ghcr.io/siderolabs/crun:1.21",
 
 	// renovate: datasource=docker versioning=semver-coerced
