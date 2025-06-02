@@ -15,4 +15,12 @@
       ],
     },
   ],
+  packageRules: [{
+    groupName: "devDependencies (non-major)",
+    matchManagers: ["custom.regex"],
+    matchPackageNames: [
+      "ghcr.io/siderolabs**",
+      "siderolabs**"
+    ],
+  }]
 }
