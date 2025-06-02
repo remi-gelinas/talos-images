@@ -10,7 +10,7 @@ let extensions = [
 	"ghcr.io/siderolabs/crun:1.21",
 
 	// renovate: datasource=docker versioning=semver-coerced
-	"ghcr.io/siderolabs/thunderbolt:v1.10.2",
+	"ghcr.io/siderolabs/thunderbolt:v1.10.3",
 
 	// renovate: datasource=docker versioning=loose
 	"ghcr.io/siderolabs/intel-ucode:20250211",
