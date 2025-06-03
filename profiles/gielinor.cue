@@ -13,7 +13,7 @@ let extensions = [
 	"ghcr.io/siderolabs/thunderbolt:v1.10.2",
 
 	// renovate: datasource=docker versioning=loose
-	"ghcr.io/siderolabs/intel-ucode:20250211",
+	"ghcr.io/siderolabs/intel-ucode:20250512",
 
 	// renovate: datasource=docker versioning=loose
 	"ghcr.io/siderolabs/i915-ucode:20241110",
