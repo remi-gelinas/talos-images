@@ -19,7 +19,7 @@
     description: "Talos and Systems Extensions",
     groupName: "talos",
     matchDatasources: ["docker", "github-releases"],
-    matchPackagePatterns: ["ghcr.io/siderolabs*"],
+    matchPackageNames: ["/^.*siderolabs\\\/.*$/"],
     group: {
       commitMessageTopic: "{{{groupName}}} group"
     }
