@@ -16,8 +16,12 @@
     },
   ],
   packageRules: [{
+    description: "Talos and Systems Extensions",
     groupName: "talos",
-    matchManagers: ["custom.regex"],
-    matchPackageNames: ["**siderolabs**"],
+    matchDatasources: ["docker", "github-releases"],
+    matchPackagePatterns: ["ghcr.io/siderolabs*"],
+    group: {
+      commitMessageTopic: "{{{groupName}}} group"
+    }
   }]
 }
