@@ -56,7 +56,7 @@ jobs:
           cue export ${{ inputs.profile }} --out yaml | docker run --rm -i -v $(pwd)/secureboot:/secureboot:ro -v $(pwd)/_out:/out ghcr.io/siderolabs/imager:${{ steps.build-info.outputs.talos-version }} -
       
       - name: Install crane
-        uses: iarekylew00t/crane-installer@742c36c852cb03df7b947b37aff0b65ead86f49e # v3
+        uses: iarekylew00t/crane-installer@8d4dadcb8dffbf08e545af6ee697a94c54409aae # v3
 
       - name: Login to GHCR
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
